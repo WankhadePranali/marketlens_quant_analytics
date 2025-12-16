@@ -1,162 +1,213 @@
-# Real-Time Crypto Dashboard
+MarketLens – Real-Time Quant Analytics Dashboard
 
-The **Real-Time Crypto Dashboard** is a dynamic cryptocurrency analysis tool that combines real-time data visualization, predictive analytics, and market trend analysis. It integrates advanced machine learning models like LSTM (Long Short-Term Memory) to forecast cryptocurrency prices, providing users with a powerful interface for exploring and understanding market behavior.
+The MarketLens Quant Analytics Dashboard is a real-time cryptocurrency market analytics tool designed to help traders and researchers monitor price behavior, statistical signals, and short-term market dynamics.
 
-## Features
+The dashboard focuses on quantitative analytics, statistical indicators, and alerting, rather than price prediction, making it suitable for exploratory analysis, signal generation, and research workflows.
 
-- **Candlestick Chart**: Visualizes historical price trends with open, high, low, and close prices, accompanied by trading volume.
-- **Prediction Chart**: Forecasts future prices using LSTM models, offering insights into market trends.
-- **Technical Indicators**:
-  - **Exponential Moving Average (EMA)**: Calculated over 20 days for trend analysis.
-  - **Simple Moving Average (SMA)**: Computed over 20 days for price movement insights.
-  - **Additional Features**: Includes key metrics like high, low, open, close prices, and volume for comprehensive analysis.
-- **Year-over-Year (YoY) Change**: Highlights the percentage change in price compared to the same time last year, offering a long-term perspective on market trends.
-- **Month-over-Month (MoM) Change**: Tracks the percentage change in price compared to the same time last month, providing insights into recent price movements.
-- **Note**: Timezone is in UTC.
-## Folder Structure
+🚀 Features
+📈 Market Visualization
 
-### Frontend
-- `app.py`:
-  - Streamlit-based frontend for the dashboard.
-  - Connects to Supabase to fetch and display real-time cryptocurrency data.
+Candlestick Chart showing OHLC (Open, High, Low, Close) prices
 
-### Data Fetcher
-- `datafetcher.py`:
-  - Contains the CoinbaseAPI class to collect live data every 15 minutes from the Coinbase Exchange API.
-  - Fetches and stores candlestick data for historical analysis.
+Volume Bars aligned with price action
 
-### Machine Learning
-- `cryptofeatureengineering.ipynb`:
-  - The main notebook for LSTM-based price predictions.
-  - Features used for training:
-    - High, low, open, close prices.
-    - Volume.
-    - EMA (7 and 30 days).
-    - SMA (7 and 30 days).
-  - **Error Metric**:
-    - **Root Mean Square Error (RMSE)** is used to evaluate model performance.
+Interactive charts with zoom, pan, and hover support
 
-### Backend
-- Other backend files for handling data processing and storage are hidden and not exposed.
+⏱️ Timeframe & Sampling Control
 
-## Technical Details
+Timeframe Selection:
 
-### LSTM Predictions
-- LSTM is a type of recurrent neural network (RNN) designed for sequence prediction.
-- It processes historical data (e.g., past 48 hours of prices) and predicts the next price.
-- Predictions are displayed alongside actual prices in the **Prediction Chart**.
+Last 24 Hours
 
-### Key Features in LSTM Model:
-- Input sequences of historical data (e.g., 192 timesteps for 15-minute intervals).
-- Target values are the next closing price.
-- RMSE quantifies the accuracy of predictions.
+Last 3 Days
 
-## Model Evaluation
+Last Week
 
+Last Month
 
-The following table shows the **Root Mean Square Error (RMSE)** values for each cryptocurrency. RMSE is used to evaluate the accuracy of the LSTM predictions, with lower values indicating better performance.
+Sampling / Resampling Options:
 
-| Product ID      | RMSE        |
-|-----------------|-------------|
-| ADA-USD         | 0.0115      |
-| ADA-USD         | 0.0125      |
-| DOT-USD         | 0.1124      |
-| ETH-USD         | 37.8910     |
-| BAT-USD         | 0.0022      |
-| BTC-USD         | 11302.3387  |
-| DOGE-USD        | 0.0793      |
-| BTRST-USD       | 0.0255      |
-| ATOM-USD        | 0.0845      |
-| LINK-USD        | 1.1694      |
-| RAD-USD         | 0.0187      |
-| MANA-USD        | 0.0080      |
-| SUSHI-USD       | 0.0185      |
-| SOL-USD         | 10.7063     |
-| MATIC-USD       | 0.0039      |
-| REQ-USD         | 0.0010      |
-| ICP-USD         | 0.1028      |
-| XRP-USD         | 0.5542      |
+Raw (original data)
 
----
+1 Minute
 
-### **Insights:**
-- **Low RMSE**: Cryptocurrencies like `REQ-USD` (0.0010), `BAT-USD` (0.0022), and `MANA-USD` (0.0080) demonstrate highly accurate predictions.
-- **High RMSE**: `BTC-USD` shows a significantly high RMSE (11302.3387), likely due to its large price scale.
-- **Moderate RMSE**: Most altcoins, such as `DOT-USD`, `ATOM-USD`, and `XRP-USD`, show moderate prediction accuracy, with RMSE values between 0.1 and 1.0.
+5 Minutes
 
-This evaluation highlights the effectiveness of the LSTM model in capturing price trends for most cryptocurrencies while identifying areas for further optimization.
+This separation allows flexible analysis across different historical spans and resolutions.
 
-## Dashboard
+📊 Quantitative Analytics
 
-### **1. Real-Time Metrics Chart**
+Spread
 
-<img width="1448" alt="Screenshot 2025-01-27 at 12 17 33 PM" src="https://github.com/user-attachments/assets/5dca78d8-d659-458c-bc16-b033f998e791" />
+Measures short-term price deviation using lagged prices
 
-This Metrics Chart provides an overview of **real-time cryptocurrency metrics**, offering key insights into the selected trading pair:
+Z-Score
 
-- **Price & Volume Metrics**:
-  - **Current Price**: Displays the latest price of the selected trading pair.
-  - **Volume**: Indicates the trading volume during the selected timeframe.
-  - **Daily Range**: Shows the price difference between the highest and lowest value in the last 24 hours.
-  - **24h Change**: Reflects the percentage change in price over the past day.
+Standardizes spread values to identify statistically significant deviations
 
-- **Technical & Historical Metrics**:
-  - **SMA (20 Days)**: Simple Moving Average over the past 20 days, showing overall price trends.
-  - **EMA (20 Days)**: Exponential Moving Average over the past 20 days, focusing on recent price changes.
-  - **YoY Change**: Year-over-Year percentage change, comparing the current price with the price from the same day last year.
-  - **MoM Change**: Month-over-Month percentage change, comparing the current price with the price from the same day last month.
+Rolling Correlation
 
+Tracks short-term dependency between consecutive price movements
 
-### **2. Prediction Chart**
+🚨 Alerting
 
-![Screenshot 2025-01-26 at 11 45 04 PM](https://github.com/user-attachments/assets/59dacb15-845a-46d0-994f-5f9b3d5f66c0)
+Z-Score Threshold Alerts
 
-The Prediction chart displays **predicted values** for the next six data points, generated using the LSTM model:
-- **Markers** indicate the predicted prices at each step.
-- A **star marker** highlights the predicted price and time for the final data point (after six minutes).
+User-defined threshold
 
-This setup provides both historical context and forward-looking predictions for informed decision-making.
+Alert triggered when |Z| > threshold
 
-### **3. Candlestick Chart**
-![Screenshot 2025-01-26 at 11 45 27 PM](https://github.com/user-attachments/assets/6301916a-dd82-4d24-992c-5505c6751feb)
+Useful for mean-reversion and anomaly detection
 
-The Candlestick chart visualizes historical price trends. It includes:
-- **Candlesticks** representing open, high, low, and close prices for each time period.
-- **Volume bars** at the bottom to indicate trading activity.
+📁 Data Export
+
+Download processed data (prices + analytics) as CSV
+
+Enables offline analysis and research
+
+🧱 Project Structure
+project-folder/
+ ├── app.py                # Streamlit dashboard (frontend + backend logic)
+ ├── README.md             # Project documentation
+
+🛠️ Tech Stack
+
+Language: Python
+
+Frontend & Backend: Streamlit
+
+Data Source: Coinbase Exchange REST API
+
+Data Processing: Pandas, NumPy
+
+Visualization: Plotly
+
+HTTP Requests: Requests
+
+🔄 Data Flow & Methodology
+1️⃣ Data Ingestion
+
+Historical OHLCV data and latest ticker prices are fetched from the Coinbase Exchange REST API
+
+No authentication or API keys required
+
+2️⃣ Sampling / Resampling
+
+Raw market data can be resampled to:
+
+1-minute
+
+5-minute intervals
+
+Aggregation logic:
+
+Open → first value
+
+High → max
+
+Low → min
+
+Close → last
+
+Volume → sum
+
+3️⃣ Quantitative Analytics
+🔹 Spread
+Spread = Price(t) − Price(t−1)
 
 
+Captures short-term deviations useful for statistical monitoring.
 
-## How to Use
+🔹 Z-Score
+Z = (Spread − Rolling Mean) / Rolling Standard Deviation
 
-1. **Run the App**:
-   - Dashboard Link: https://akshada2712-real-time-crypto-analysis-app-jz2woj.streamlit.app/
 
-2. **Explore the Dashboard**:
-   - Select a trading pair (e.g., BTC-USD).
-   - Choose a timeframe (e.g., Last Week) for analysis.
-   - View:
-     - **Real-time metrics**: Current price, volume, daily range.
-     - **Candlestick Chart**: Historical trends with technical indicators.
-     - **Prediction Chart**: Future price forecasts.
+Used to detect statistically extreme price movements.
 
-3. **Analyze Results**:
-   - Leverage LSTM-based predictions to make informed decisions.
-   - Use metrics like RMSE to evaluate prediction accuracy.
+🔹 Rolling Correlation
 
-## Additional Information
+Measures correlation between current price and its lagged version
 
-### Key Points from UnderstandingCrypto.md
-1. **Candlestick Chart**:
-   - Open, high, low, and close prices give a complete view of market activity.
-   - Volume bars indicate trading intensity.
+Helps identify regime changes or weakening trends
 
-2. **Market Sentiment**:
-   - Bullish (uptrend): Price increases over time.
-   - Bearish (downtrend): Price decreases over time.
+4️⃣ Alerting Logic
 
-3. **Technical Indicators**:
-   - SMA and EMA highlight trends and price momentum.
-   - Volume analysis shows periods of high and low trading activity.
+User defines a Z-score threshold
 
-4. **Data Sources**:
-   - All data is fetched from Coinbase Exchange APIs, ensuring accuracy and reliability.
+Alert is triggered when:
+
+|Z| > Threshold
+
+5️⃣ Visualization
+
+Candlestick + volume charts
+
+Z-score and correlation plots
+
+Fully interactive using Plotly
+
+▶️ How to Run the Application
+1. Install Dependencies
+pip install streamlit pandas plotly requests numpy
+
+2. Run the App
+python -m streamlit run app.py
+
+
+The dashboard will open at:
+
+http://localhost:8501
+
+🧠 Design Philosophy
+
+Modular separation between:
+
+Data ingestion
+
+Sampling
+
+Analytics
+
+Visualization
+
+Designed for extensibility:
+
+REST → WebSocket upgrade possible
+
+New analytics can be added easily
+
+Focus on clarity over complexity
+
+An architecture diagram will be added in a future update.
+
+🤖 ChatGPT Usage Transparency
+
+ChatGPT was used as a development assistant for:
+
+Structuring the application architecture
+
+Generating and refining Python code
+
+Validating analytics logic
+
+Improving documentation clarity
+
+All final implementation, testing, and decisions were performed by the author.
+
+🔮 Future Enhancements
+
+WebSocket-based tick data ingestion
+
+Multi-asset pair analytics
+
+ADF stationarity testing
+
+Kalman filter-based hedge ratio
+
+Mean-reversion backtesting module
+
+Persistent storage using Redis or PostgreSQL
+
+⚠️ Disclaimer
+
+This project is intended for educational and research demonstration purposes only and does not constitute financial or investment advice.
